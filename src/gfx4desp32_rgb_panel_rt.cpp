@@ -239,8 +239,8 @@ void gfx4desp32_rgb_panel_rt::touchCalibration() {
     int cx2 = calx2;
     int cy1 = caly1;
     int cy2 = caly2;
-    int dx1, dx2, dy1, dy2;
-    int ncx1, ncx2, ncy1, ncy2;
+    int dx1 = -1, dx2 = -1, dy1 = -1, dy2 = -1;  // Initialize to -1 (not touched)
+    int ncx1 = 0, ncx2 = 0, ncy1 = 0, ncy2 = 0;  // Initialize to 0 (will be set by calibration)
     int calsteps = 5;
     long tnow;
 

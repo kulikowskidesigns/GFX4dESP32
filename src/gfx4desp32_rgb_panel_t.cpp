@@ -47,7 +47,7 @@ void gfx4desp32_rgb_panel_t::touch_Set(uint8_t mode) {
 int gfx4desp32_rgb_panel_t::touch_GetTouchPoints(int* tpx, int* tpy){
 	int num = 0;
 	if (!(_TouchEnable)) return 0;
-	int bytesReceived, tps;
+	int bytesReceived, tps = 0xff;  // Initialize to 0xff (no touch points)
     Wire.beginTransmission(0x38);
     Wire.write((byte)2);
     Wire.endTransmission();

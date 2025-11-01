@@ -730,8 +730,8 @@ void gfx4desp32_rgb_panel::DrawFrameBufferAreaXY(uint8_t fbnum, int16_t x1, int1
         x_start = 0; 
     if (y_start < 0)
         y_start = 0;
-	tx = tx_start;
-	if (tx_start < 0){
+    tx = tx_start;
+    if (tx_start < 0){
         sub = tx_start;
 		tx_start = 0;
 	}

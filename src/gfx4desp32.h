@@ -39,7 +39,7 @@
 //#define LITTLEFS_FORMAT_ON_FAIL
 
 //**** Uncomment below if SD_MMC File sysem is used instead of SdFat. Note, SPI is not available to user on RGB displays when SDMMC is enabled ****
-#define USE_SDMMC_FILE_SYSTEM
+#define USE_SDMMC_FILE_SYSTEM  // Using SD_MMC stub - we don't actually use SD card, but need this to avoid SdFat dependency
 
 //**** Uncomment below if external SDMMC slot is used instead of on-board slot, Note, not available on RGB displays ****
 //#define SDMMC_4BIT
