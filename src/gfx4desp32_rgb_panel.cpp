@@ -145,7 +145,7 @@ esp_lcd_panel_handle_t gfx4desp32_rgb_panel::__begin() {
 	ESP_LOGI(TAG, "Install RGB LCD panel driver");
 	
     panel_config->dma_burst_size = 64;
-    panel_config->num_fbs = 0;
+    panel_config->num_fbs = 2;  // Enable double buffering to prevent race conditions with DMA
     panel_config->flags.fb_in_psram = true; // allocate frame buffer in PSRAM         
 
     ESP_ERROR_CHECK(esp_lcd_new_rgb_panel(panel_config, &panel_handle));
@@ -160,7 +160,16 @@ esp_lcd_panel_handle_t gfx4desp32_rgb_panel::__begin() {
 
     ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
      
-	ESP_ERROR_CHECK(esp_lcd_rgb_panel_get_frame_buffer(panel_handle, 1, &fb));
+	// Get frame buffer(s) - with num_fbs=2, RGB driver automatically swaps buffers at vsync
+	// This prevents race conditions where we write while DMA is reading
+	if (panel_config->num_fbs >= 2) {
+		void *fb1 = nullptr, *fb2 = nullptr;
+		ESP_ERROR_CHECK(esp_lcd_rgb_panel_get_frame_buffer(panel_handle, 2, &fb1, &fb2));
+		fb = (uint8_t*)fb1;  // Use first buffer as primary
+		ESP_LOGI(TAG, "Double buffering enabled: fb1=%p, fb2=%p", fb1, fb2);
+	} else {
+		ESP_ERROR_CHECK(esp_lcd_rgb_panel_get_frame_buffer(panel_handle, 1, &fb));
+	}
 
 	SelectFB(0);
 	
